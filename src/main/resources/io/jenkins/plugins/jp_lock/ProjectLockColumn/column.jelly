@@ -1,0 +1,16 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <td>
+        <j:if test="${it.isLocked(job)}">
+            <span style="color: #d81b60; font-weight: bold;">
+                <l:icon src="symbol-lock-closed-outline plugin-ionicons-api" class="icon-sm" style="margin-right: 5px;"/>
+                Occupied: ${it.getLockedBy(job)}
+            </span>
+        </j:if>
+        <j:if test="${!it.isLocked(job)}">
+            <span style="color: #4caf50;">
+                Free
+            </span>
+        </j:if>
+    </td>
+</j:jelly>

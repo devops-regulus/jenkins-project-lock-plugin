@@ -1,0 +1,54 @@
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    <div id="project-lock-container" style="display: none;">
+        <j:set var="locked" value="${it.locked}" />
+        <j:set var="user" value="${it.lockedBy}" />
+        
+        <j:if test="${locked}">
+            <div id="lock-status-header" style="display:inline-flex; align-items:center; margin-left:15px; background:#fce4ec; border:1px solid #d81b60; padding:2px 10px; border-radius:4px; color:#d81b60; font-size:0.9rem;">
+                <l:icon src="symbol-lock-closed-outline plugin-ionicons-api" class="icon-sm" style="margin-right:5px;"/>
+                <strong>Occupied: ${user}</strong>
+            </div>
+        </j:if>
+        
+        <j:if test="${!locked}">
+            <div id="lock-status-header" style="display:inline-flex; align-items:center; margin-left:15px; background:#e8f5e9; border:1px solid #4caf50; padding:2px 10px; border-radius:4px; color:#4caf50; font-size:0.9rem;">
+                <l:icon src="symbol-lock-open-outline plugin-ionicons-api" class="icon-sm" style="margin-right:5px;"/>
+                <strong>Free</strong>
+            </div>
+        </j:if>
+    </div>
+
+    <script>
+        (function() {
+            document.addEventListener('DOMContentLoaded', function() {
+                // Prevent duplicate rendering
+                if (document.querySelector('.lock-project-rendered')) {
+                    var oldContainer = document.getElementById('project-lock-container');
+                    if (oldContainer) oldContainer.remove();
+                    return;
+                }
+                
+                var header = document.querySelector('.jenkins-app-bar__content.jenkins-build-caption');
+                if (!header) {
+                    // Specific case for generic views like brunky in Multibranch
+                    header = document.querySelector('.jenkins-app-bar__content');
+                }
+                if (!header) {
+                    // Fallback to exactly the main h1. Folder views usually have this.
+                    header = document.querySelector('#main-panel h1');
+                }
+                
+                var container = document.getElementById('project-lock-container');
+                if (header &amp;&amp; container) {
+                    var elements = container.children;
+                    while(elements.length > 0) {
+                        elements[0].classList.add("lock-project-rendered");
+                        header.appendChild(elements[0]);
+                    }
+                    container.remove();
+                }
+            });
+        })();
+    </script>
+</j:jelly>

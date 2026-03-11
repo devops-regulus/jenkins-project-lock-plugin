@@ -96,6 +96,9 @@ Typical scenarios where this plugin is useful:
 * Reducing conflicts during manual operations
 
 ---
+## READY PLUGIN
+
+jp_lock.hpi
 
 ## Contributing
 
